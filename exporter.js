@@ -80,36 +80,36 @@ function work() {
 
     const files = getFileListFromPath()
 
-    // const promises = files.map(file => {
-    //     const fileName = getFileName(file);
-    //     return JSDOM.fromFile(file).then(dom => {
-    //         const aTags = dom.window.document.querySelectorAll("a");
-    //         const output = [];
-    //         aTags.forEach(tag => {
-    //             console.log(tag.children)
-    //             output.push(`${fileName},${tag.innerHTML},${tag.href}`)
-    //         })
-    //         return output;
-    //     })
-    // })
-    // Promise.all(promises).then(values => {
-    //     const flattenedVals = values.flat();
-    //     fs.writeFileSync(outputFileName, flattenedVals.join("\n"));
-    //     console.log("Done. Output file: " + outputFileName);
-    // })
-
-    JSDOM.fromFile(files[0]).then(dom => {
-        const fileName = getFileName(files[3]);
-        console.log(fileName)
-        const aTags = dom.window.document.querySelectorAll("a");
-        const output = [];
-        console.log(aTags.length)
-        aTags.forEach(tag => {
-            console.log(tag.children)
-            output.push(`${fileName},${tag.innerHTML},${tag.href}`)
+    const promises = files.map(file => {
+        const fileName = getFileName(file);
+        return JSDOM.fromFile(file).then(dom => {
+            const aTags = dom.window.document.querySelectorAll("a");
+            const output = [];
+            aTags.forEach(tag => {
+                console.log(tag.children)
+                output.push(`${fileName},${tag.innerHTML},${tag.href}`)
+            })
+            return output;
         })
-        return output;
     })
+    Promise.all(promises).then(values => {
+        const flattenedVals = values.flat();
+        fs.writeFileSync(outputFileName, flattenedVals.join("\n"));
+        console.log("Done. Output file: " + outputFileName);
+    })
+
+    // JSDOM.fromFile(files[0]).then(dom => {
+    //     const fileName = getFileName(files[3]);
+    //     console.log(fileName)
+    //     const aTags = dom.window.document.querySelectorAll("a");
+    //     const output = [];
+    //     console.log(aTags.length)
+    //     aTags.forEach(tag => {
+    //         console.log(tag.children)
+    //         output.push(`${fileName},${tag.innerHTML},${tag.href}`)
+    //     })
+    //     return output;
+    // })
 }
 
 function getFileName(path) {
