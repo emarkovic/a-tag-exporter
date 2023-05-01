@@ -3,7 +3,6 @@
 const os = require('os');
 const fs = require('fs');
 const jsdom = require("jsdom");
-const { buffer } = require('stream/consumers');
 const { JSDOM } = jsdom;
 
 // HELP text
@@ -86,7 +85,6 @@ function work() {
             const aTags = dom.window.document.querySelectorAll("a");
             const output = [];
             aTags.forEach(tag => {
-                console.log(tag.children)
                 output.push(`${fileName},${tag.innerHTML},${tag.href}`)
             })
             return output;
